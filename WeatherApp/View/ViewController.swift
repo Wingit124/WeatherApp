@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 
 class ViewController: UIViewController {
-    // masukawa
+
     //1日のて三時間おきのデータがここに入っている
     var todayWeather: [WeatherList]!
     //テーブルビューに表示するための情報が入っている
