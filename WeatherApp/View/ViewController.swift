@@ -32,12 +32,13 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         //コレクションビューにカスタムしたセルを適用
         weatherCollectionView.register(UINib(nibName: "WeatherCell", bundle: nil), forCellWithReuseIdentifier: "WeatherCell")
-        weatherCollectionView.layer.borderColor = UIColor.lightGray.cgColor
-        weatherCollectionView.layer.borderWidth = 3
         //テーブルビューにカスタムセルを適用
         weatherTableView.register(UINib(nibName: "WeatherRow", bundle: nil), forCellReuseIdentifier: "WeatherRow")
         //色々天気からデータをもらって表示する
         setVarious(lat: "35.689506", lon: "139.6917")
+        //背景を設定する
+        nowWeatherStr = nowWeather.getWeatherInfo()!.weather[0].main
+        setBackGround(nowWeatherStr: nowWeatherStr, isChange: false)
         //テキストフィールドデリゲートを設定
         cityNameTextField.delegate = self
     }
@@ -61,91 +62,60 @@ class ViewController: UIViewController {
         tempMaxLabel.text = weather.getTempMax()
         //最低気温をセット
         tempMinLabel.text = weather.getTempMin()
-        
+        //背景画像を変える
+        nowWeatherStr = nowWeather.getWeatherInfo()!.weather[0].main
+        setBackGround(nowWeatherStr: nowWeatherStr, isChange: true)
         //テーブルとコレクションのデータを更新
         weatherTableView.reloadData()
         weatherCollectionView.reloadData()
     }
     
-}
-
-
-//テーブルビューのエクステンション
-extension ViewController: UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return todayWeatherDetails.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //セルの生成
-        let row = weatherTableView.dequeueReusableCell(withIdentifier: "WeatherRow", for: indexPath) as! WeatherRow
-        row.setData(data: todayWeatherDetails[indexPath.row])
-        return row
-    }
-    
-}
-
-
-//コレクションビューのエクステンション
-extension ViewController: UICollectionViewDataSource {
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //今日の天気データ分の個数表示する
-        return todayWeather.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        //セルの生成
-        let cell = weatherCollectionView.dequeueReusableCell(withReuseIdentifier: "WeatherCell", for: indexPath) as! WeatherCell
-        //indexPathごとにセルの設定をするために使う天気データ
-        let weather = todayWeather[indexPath.row]
-        //セルを設定する関数に天気データを渡す
-        cell.setWeatherCell(weather: weather)
+    var imageName: String!
+    var nowWeatherStr: String!
+    //背景を設定
+    func setBackGround(nowWeatherStr: String, isChange: Bool){
         
-        return cell
-    }
-    
-}
-
-
-//テキストフィールドのリターンキーを押した時の動作を変えたい
-extension ViewController: UITextFieldDelegate {
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
-        let inputText: String = textField.text ?? ""
-        
-        let geoCoder: CLGeocoder = CLGeocoder()
-        
-        //ジオコーディングを使って地名を座標に変換する
-        geoCoder.geocodeAddressString(inputText, completionHandler: {(placemarks, error) in
-            if(error == nil) {
-                
-                for placemark in placemarks! {
-                    //ストーリーボードを取得
-                    let storyboard: UIStoryboard = self.storyboard!
-                    //遷移先ViewControllerのインスタンス取得
-                    let nextView = storyboard.instantiateViewController(withIdentifier: "modal") as! MapAleartViewController
-                    //遷移先のフィールドに値をセット
-                    nextView.lat = placemark.location!.coordinate.latitude
-                    nextView.lon = placemark.location!.coordinate.longitude
-                    //画面遷移
-                    self.present(nextView, animated: true, completion: nil)
+        //すでに背景が設定してある場合は一旦イメージビューを消してから再表示する
+        if isChange {
+            for v in view.subviews {
+                // オブジェクトの型がUIImageView型で、タグ番号が999番のオブジェクトを取得する
+                if let v = v as? UIImageView, v.tag == 999 {
+                    // そのオブジェクトを親のviewから取り除く
+                    v.removeFromSuperview()
                 }
-                
-            } else {
-                //入力された地名が見つからなかった時の処理
-                if inputText != "" {
-                    print("error")
-                }
-                print("close")
-            }})
+            }
+        }
         
-        //キーボードを閉じる処理
-        textField.resignFirstResponder()
-        return false
+        if nowWeatherStr == "Clear" {
+            imageName = "clearBG"
+            weatherLabel.text = "晴れ"
+        } else if nowWeatherStr == "Clouds" {
+            imageName = "cloudBG"
+            weatherLabel.text = "曇り"
+        } else if nowWeatherStr == "Snow" {
+            imageName = "snowBG"
+            weatherLabel.text = "雪"
+        } else {
+            imageName = "rainBG"
+            weatherLabel.text = "雨"
+        }
+
+        //画面サイズを取得
+        let widht = UIScreen.main.bounds.size.width
+        let height = UIScreen.main.bounds.size.height
+        //画面サイズに合わせてimageViewを追加
+        let backGroundImage = UIImageView(frame: CGRect(x: 0, y: 0, width: widht, height: height))
+        //引数でもらった画像の名前をセット
+        backGroundImage.image = UIImage(named: imageName)
+        backGroundImage.tag = 999
+        //画像を画面にフィットさせる
+        backGroundImage.contentMode = UIView.ContentMode.scaleAspectFill
+        //画面に画像を追加
+        self.view.addSubview(backGroundImage)
+        //画面の一番下の層に行くようにする
+        self.view.sendSubviewToBack(backGroundImage)
     }
+
     
 }
 

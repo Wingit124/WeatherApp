@@ -25,7 +25,7 @@ struct WeatherList: Codable {
     var weather: [Weather]
     var clouds: Clouds
     var wind: Wind
-    var sys: Sys
+    var sys: Sys?
     var dt_txt: String      //日付データ(例: "2019-12-17 06:00:00")
 }
 
@@ -58,7 +58,7 @@ struct Wind: Codable {
 }
 
 struct Sys: Codable {
-    var pod: String        //不明
+    var pod: String?        //不明
 }
 
 struct City: Codable {

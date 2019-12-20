@@ -23,12 +23,16 @@ class WeatherCell: UICollectionViewCell {
         
         let time: String = String((String(weather.dt_txt.suffix(8))).prefix(2)) + "時"
         let temp: String = String(round(weather.main.temp)).replacingOccurrences(of: ".0", with: "°")
-        var imageName: String = ""
         
-        if weather.weather[0].main == "Clear" {
+        var imageName: String = ""
+        let weatherStr = weather.weather[0].main
+        
+        if weatherStr == "Clear" {
             imageName = "clear"
-        } else if weather.weather[0].main == "Clouds" {
+        } else if weatherStr == "Clouds" {
             imageName = "cloud"
+        } else if weatherStr == "Snow" {
+            imageName = "snow"
         } else {
             imageName = "rain"
         }

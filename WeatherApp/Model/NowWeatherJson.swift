@@ -57,8 +57,8 @@ struct NowClouds: Codable {
 }
 
 struct NowSys: Codable {
-    var type: Int
-    var id: Int
+    var type: Int?
+    var id: Int?
     var country: String
     var sunrise: Int
     var sunset: Int
