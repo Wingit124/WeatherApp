@@ -132,7 +132,8 @@ class WeatherInfoClass {
         
         var todayWeathers: [WeatherList] = []
         let weatherInfo = getWeatherInfo()
-        let today = weatherInfo!.list[0].dt_txt.prefix(10)
+//        let today = weatherInfo!.list[0].dt_txt.prefix(10)
+        let today = "2019-12-21"
         for weather in weatherInfo!.list {
             
             if weather.dt_txt.prefix(10) == today {

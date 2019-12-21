@@ -34,7 +34,7 @@ class ViewController: UIViewController {
         weatherCollectionView.register(UINib(nibName: "WeatherCell", bundle: nil), forCellWithReuseIdentifier: "WeatherCell")
         //テーブルビューにカスタムセルを適用
         weatherTableView.register(UINib(nibName: "WeatherRow", bundle: nil), forCellReuseIdentifier: "WeatherRow")
-        //色々天気からデータをもらって表示する
+        //天気データをセットする関数に座標を渡す
         setVarious(lat: "35.689506", lon: "139.6917")
         //背景を設定する
         nowWeatherStr = nowWeather.getWeatherInfo()!.weather[0].main

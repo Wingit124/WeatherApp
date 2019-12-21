@@ -135,7 +135,7 @@ class NowWeatherInfoClass {
         if weather.visibility == nil {
             visivility = "情報無し"
         } else {
-            visivility = String((weather.visibility! / 100)) + "km"
+            visivility = String((weather.visibility! / 1000)) + "km"
         }
         
         var windDeg = ""

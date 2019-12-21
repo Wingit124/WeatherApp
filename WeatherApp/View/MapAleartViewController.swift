@@ -35,11 +35,10 @@ class MapAleartViewController: UIViewController {
         
         self.view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)
         modalView.layer.cornerRadius = 30
-        mapView.layer.cornerRadius = 30
         //中心の設定
         let center = CLLocationCoordinate2DMake(lat, lon)
         //表示範囲
-        let span = MKCoordinateSpan(latitudeDelta: 1, longitudeDelta: 1)
+        let span = MKCoordinateSpan(latitudeDelta: 3, longitudeDelta: 3)
         //中心座標と表示範囲をマップに登録する。
         let region = MKCoordinateRegion(center: center, span: span)
         mapView.setRegion(region, animated:true)
