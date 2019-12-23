@@ -40,7 +40,7 @@ struct NowWeather: Codable {
 
 struct NowMain: Codable {
     var temp: Float
-    var feels_like: Float
+    var feels_like: Float?
     var temp_min: Float
     var temp_max: Float
     var pressure: Int
@@ -129,7 +129,13 @@ class NowWeatherInfoClass {
         let humidity = String(weather.main.humidity) + "%"
         
         let windSpeed = String(weather.wind.speed) + "m/s"
-        let feelTemp = String(round(weather.main.feels_like)).replacingOccurrences(of: ".0", with: "°")
+        
+        var feelTemp = ""
+        if weather.main.feels_like == nil {
+            feelTemp = "情報なし"
+        } else {
+            feelTemp = String(round(weather.main.feels_like!)).replacingOccurrences(of: ".0", with: "°")
+        }
         
         var visivility = ""
         if weather.visibility == nil {

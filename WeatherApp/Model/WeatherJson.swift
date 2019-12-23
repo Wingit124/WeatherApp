@@ -31,7 +31,7 @@ struct WeatherList: Codable {
 
 struct Main: Codable {
     var temp: Float         //気温
-    var feels_like: Float   //体感温度
+    var feels_like: Float?  //体感温度
     var temp_min: Float     //最低気温
     var temp_max: Float     //最高気温
     var pressure: Float     //気圧
