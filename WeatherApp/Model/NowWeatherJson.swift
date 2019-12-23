@@ -77,7 +77,7 @@ class NowWeatherInfoClass {
     
     func getWeatherInfo() -> NowWeatherInfo? {
         
-        let appId: String = "b98b85052a48d89f2bc5c24a1af33454"
+        let appId: String = APIKEY().getApiKey()
         let lat_lon: String = "lat=\(lat!)&lon=\(lon!)"
         let baseUrlString: String = "http://api.openweathermap.org/data/2.5/weather?\(lat_lon)&units=metric&APPID="
         let urlString: String = baseUrlString + appId
