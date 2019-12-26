@@ -11,7 +11,7 @@ import Foundation
 class APIKEY {
     
     func getApiKey() -> String {
-        return "b98b85052a48d89f2bc5c24a1af33454"
+        return ""
     }
     
 }
