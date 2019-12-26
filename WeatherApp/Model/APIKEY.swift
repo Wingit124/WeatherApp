@@ -11,7 +11,7 @@ import Foundation
 class APIKEY {
     
     func getApiKey() -> String {
-        return ""
+        return "ここにAPIキーを入力"
     }
     
 }
